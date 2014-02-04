@@ -7,11 +7,18 @@
 if [ ! -d "bin" ]; then
     mkdir bin
 fi
+if [ "$JAVAEXTERN" == "" ]; then
+    echo "WARNING: environment variable JAVAEXTERN is not set"
+    exit 1;
+else
+    echo "JAVAEXTERN = ${JAVAEXTERN}"
+fi
+
 if [ $# -gt 0 ]; then
     case "$1" in
 	clean)	echo "cleaning..."; shift; rm bin/*.class  ;;
 	*)  echo "unknown option: $1"; shift ;;
     esac
 else
-    javac -cp ../extern/junit-4.11.jar src/*.java -g -d bin 
+    javac -cp ${JAVAEXTERN}/*.jar src/*.java -g -d bin 
 fi
