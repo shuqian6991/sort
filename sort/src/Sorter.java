@@ -1,5 +1,8 @@
 /*
- * A set of sorting algorithms
+ * A set of sorting algorithms. The code is cobbled together from various sources that
+ * explained each algorithm.
+ * I've inserted some metrics to keep track of how well each algorithm does.
+ * The most important metric is the total number of swaps done for the sorting.
  */
 public class Sorter {
 	private int _totalswaps = 0;
@@ -11,7 +14,7 @@ public class Sorter {
 		return _totalswaps;
 	}
 
-	/*
+	/* SELECTION SORT
 	 * complexity n**2
 	 * Performance:  worst = n**2 ; best = n  ; average - n**2
 	 */
@@ -29,7 +32,7 @@ public class Sorter {
 		}
 	}
 	
-	/*
+	/* BUBBLE SORT
 	 * complexity n**2
 	 * Performance:  worst = n**2 ; best = n  ; average - n**2
 	 */
@@ -51,7 +54,7 @@ public class Sorter {
 
 	}
 	
-	/*
+	/* INSERTION SORT
 	 * complexity n**2
 	 * Performance:  worst = n**2 ; best = n  ; average - n**2
 	 */
@@ -70,7 +73,7 @@ public class Sorter {
 		}
 	}
 	
-	/*
+	/* SHELL SORT
 	 * Performance: n**2   - but *way* better than bubble, insertion, or selection for large lists
 	 */
 	public void shellSort(int a[]) {
@@ -88,7 +91,7 @@ public class Sorter {
 		}
 	}
 
-	/*
+	/* COMBINATION SORT
 	 * Average performance:  n log(n)    best: n    worst: n**2
 	 */
 	public void combSort(int a[]) {
@@ -110,5 +113,51 @@ public class Sorter {
 			}
 		}
 	}
+	
+	/*
+	 * HEAP SORT
+	 */
+	private int hs_leftChild(int i) { return 2*i+1; }	
+	private int hs_rightChild(int i) { return 2*i+2; }
+	
+	private void makeMaxHeap(int a[],int i,int size)
+	{
+	    int L=hs_leftChild(i);
+	    int R=hs_rightChild(i);
+	    int max = (L<=size-1 && a[L]>a[i]) ? L : i;
+	    if(R<=size-1 && a[R]>a[max])
+	        max = R;
+	    if(max != i)
+	    {
+	        int tmp = a[i];
+	        a[i]=a[max];
+	        a[max]=tmp;
+	        ++_totalswaps;
+	        makeMaxHeap(a,max,size);
+	    }
+	}
+
+	private void buildMaxHeap(int a[],int size)
+	{
+	    for(int i=size/2 - 1 ;i>=0;i--) {
+	        makeMaxHeap(a,i,size);
+	    }
+	}
+
+	public void heapSort(int a[])
+	{
+		int size = a.length;
+	    int i,temp;
+	    buildMaxHeap(a,size);
+	    for(i=size-1;i>0;i--)
+	    {
+	        temp=a[i];
+	        a[i]=a[0];
+	        a[0]=temp;
+	        size=size - 1;
+	        ++_totalswaps;
+	        makeMaxHeap(a,0,size);
+	    }
+    }
 
 }

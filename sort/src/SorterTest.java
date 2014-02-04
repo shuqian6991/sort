@@ -19,7 +19,7 @@ public class SorterTest {
 	Sorter srt = new Sorter();
 	long setupOverhead;
 	int loopCount = 2000;		// number of times we'll run each test; for a more accurate timing measurement
-	enum SortMethod {SELECTION, BUBBLE, INSERTION, COMB, SHELL};
+	enum SortMethod {SELECTION, BUBBLE, INSERTION, COMB, SHELL, HEAP};
 
 	public void resetList() {
 		for (int i=0; i < array.length; i++) {
@@ -34,16 +34,18 @@ public class SorterTest {
 		case INSERTION: return "INSERTION";
 		case COMB: return "COMB";
 		case SHELL: return "SHELL";
+		case HEAP: return "HEAP";
 		default: return "UNKNOWN SORT TYPE";
 		}
 	}
 	public void invokeSortMethod( SortMethod m) {
 		switch (m) {
-		case SELECTION: srt.selectionSort(array); break;
-		case BUBBLE: srt.bubbleSort(array); break;
-		case INSERTION: srt.insertionSort(array); break;
-		case COMB: srt.combSort(array); break;
-		case SHELL: srt.shellSort(array); break;
+		case SELECTION:	srt.selectionSort(array);	break;
+		case BUBBLE:	srt.bubbleSort(array);		break;
+		case INSERTION:	srt.insertionSort(array);	break;
+		case COMB:		srt.combSort(array);		break;
+		case SHELL:		srt.shellSort(array);		break;
+		case HEAP:		srt.heapSort(array);		break;
 		default: System.out.println("Unknown sort method invocation"); break;
 		}
 	}
@@ -126,6 +128,7 @@ public class SorterTest {
 			arrayPrint("After:", array);
 			assertTrue(validateArray(array));
 		}
+		
 		startTime = System.currentTimeMillis();
 		System.out.printf("Iterating %d times...\n",loopCount);
 		for (int i=0; i<loopCount; i++) {
@@ -159,6 +162,11 @@ public class SorterTest {
 	@Test
 	public void testShell() {
 		runTest(SortMethod.SHELL);
+	}
+
+	@Test
+	public void testHeap() {
+		runTest(SortMethod.HEAP);
 	}
 
 }
