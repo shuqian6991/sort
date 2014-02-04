@@ -4,7 +4,7 @@
 # A very simple, brute-force make script for these java sources.
 # Steve Mansour
 ################################################################
-if [ -d "bin" ]; then
+if [ ! -d "bin" ]; then
     mkdir bin
 fi
 if [ $# -gt 0 ]; then
