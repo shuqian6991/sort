@@ -1,1 +1,63 @@
-test
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.sman</groupId>
+    <artifactId>sort</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>sort</name>
+
+    <repositories>
+
+        <repository>
+            <id>third-party</id>
+            <url>http://nexus.paypal.com/nexus/content/repositories/thirdparty/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <junit.version>4.11</junit.version>
+     
+    </properties>
+
+    <dependencies>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    
+    </dependencies>
+    
+
+    <build>
+        <finalName>sort</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <skip>#{skip.compilation.func_codecov}</skip>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
+            </plugin>            
+            
+        </plugins>
+    </build>
+
+</project>
