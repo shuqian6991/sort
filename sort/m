@@ -1,4 +1,9 @@
 #!/bin/sh
+################################################################
+#
+# A very simple, brute-force make script for these java sources.
+# Steve Mansour
+################################################################
 if [ $# -gt 0 ]; then
     case "$1" in
 	clean)	echo "cleaning..."; shift; rm bin/*.class  ;;
