@@ -4,6 +4,9 @@
 # A very simple, brute-force make script for these java sources.
 # Steve Mansour
 ################################################################
+if [ -d "bin" ]; then
+    mkdir bin
+fi
 if [ $# -gt 0 ]; then
     case "$1" in
 	clean)	echo "cleaning..."; shift; rm bin/*.class  ;;
