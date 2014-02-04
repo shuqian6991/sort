@@ -1,4 +1,0 @@
-#!/bin/sh
-java -cp "../extern/*:bin" org.junit.runner.JUnitCore MergeSortTest
-java -cp "../extern/*:bin" org.junit.runner.JUnitCore SorterTest
-

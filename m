@@ -4,8 +4,8 @@
 # A very simple, brute-force make script for these java sources.
 # Steve Mansour
 ################################################################
-if [ ! -d "bin" ]; then
-    mkdir bin
+if [ ! -d "target" ]; then
+    mkdir target
 fi
 if [ "$JAVAEXTERN" == "" ]; then
     echo "WARNING: environment variable JAVAEXTERN is not set"
@@ -14,9 +14,9 @@ fi
 
 if [ $# -gt 0 ]; then
     case "$1" in
-	clean)	echo "cleaning..."; shift; rm bin/*.class  ;;
+	clean)	echo "cleaning..."; shift; rm target/*.class  ;;
 	*)  echo "unknown option: $1"; shift ;;
     esac
 else
-    javac -cp "${JAVAEXTERN}/junit-4.11.jar" src/*.java -g -d bin 
+    javac -cp "${JAVAEXTERN}/junit-4.11.jar" src/main/*.java src/test/*.java -g -d target 
 fi
