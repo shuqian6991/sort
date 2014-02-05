@@ -18,7 +18,7 @@ public class SorterTest {
 	long stopTime;
 	Sorter srt = new Sorter();
 	long setupOverhead;
-	int loopCount = 2000;		// number of times we'll run each test; for a more accurate timing measurement
+	int loopCount = 2000;	// number of times we'll run each test; for a more accurate timing measurement
 	enum SortMethod {SELECTION, BUBBLE, INSERTION, COMB, SHELL, HEAP};
 
 	public void resetList() {
@@ -87,6 +87,9 @@ public class SorterTest {
 		}
 		if (srt.getSwapCount() > 0) {
 			System.out.println("\nTotal swaps: " + srt.getSwapCount());
+		}
+		if (srt.getCompareCount() > 0) {
+			System.out.println("\nTotal value compares: " + srt.getCompareCount());
 		}
 	}	
 	

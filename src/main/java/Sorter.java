@@ -2,16 +2,22 @@
  * A set of sorting algorithms. The code is cobbled together from various sources that
  * explained each algorithm.
  * I've inserted some metrics to keep track of how well each algorithm does.
- * The most important metric is the total number of swaps done for the sorting.
+ * _totalswaps = the number of swaps the algorithm required
+ * _totalValCmp = the number of data value compares the algotrithm required
  */
 public class Sorter {
 	private int _totalswaps = 0;
+	private int _totalValCmp = 0;
 	
 	public void resetStats() {
 		_totalswaps = 0;
+		_totalValCmp = 0;
 	}
 	public int getSwapCount() {
 		return _totalswaps;
+	}
+	public int getCompareCount() {
+		return _totalValCmp;
 	}
 
 	/* SELECTION SORT
@@ -22,6 +28,7 @@ public class Sorter {
 		int n = a.length;
 		for (int i = 0; i < n-1; i++) {
 			for (int j = i + 1; j < n; j++) {
+			        ++_totalValCmp;
 				if (a[i] > a[j]) {
 					int t = a[j];
 					a[j] = a[i];
@@ -42,6 +49,7 @@ public class Sorter {
 		do {
 			swaps = 0;
 			for (int j = 0; j < n - 1; j++) {
+			        ++_totalValCmp;
 				if (a[j + 1] < a[j]) {
 					int t = a[j];
 					a[j] = a[j + 1];
@@ -64,6 +72,7 @@ public class Sorter {
 		for (int i = 1; i < n; i++) {
 			x = a[i];
 			for (int j = i - 1; j >= 0; j--) {
+			        ++_totalValCmp;
 				if (a[j] > x) {
 					a[j + 1] = a[j];
 					a[j] = x;
@@ -81,11 +90,14 @@ public class Sorter {
 		int temp;
 		for (int gap = n / 2; gap > 0; gap /= 2) {
 			for (int i = gap; i < n; i++) {
-				for (int j = i - gap; j >= 0 && a[j] > a[j + gap]; j -= gap) {
-					temp = a[j];
-					a[j] = a[j + gap];
-					a[j + gap] = temp;
-					++_totalswaps;
+				for (int j = i - gap; j >= 0; j -= gap) {
+				        ++_totalValCmp;
+				        if (a[j] > a[j+gap]) {
+					    temp = a[j];
+					    a[j] = a[j + gap];
+					    a[j + gap] = temp;
+					    ++_totalswaps;
+					}
 				}
 			}
 		}
@@ -103,6 +115,7 @@ public class Sorter {
 			}
 			swapped = false;
 			for (int i = 0; i + gap < a.length; i++) {
+				++_totalValCmp;
 				if (a[i] > a[i+gap]) {
 					int t = a[i];
 					a[i] = a[i + gap];
@@ -124,7 +137,9 @@ public class Sorter {
 	{
 	    int L=hs_leftChild(i);
 	    int R=hs_rightChild(i);
+	    ++_totalValCmp;
 	    int max = (L<=size-1 && a[L]>a[i]) ? L : i;
+	    ++_totalValCmp;
 	    if(R<=size-1 && a[R]>a[max])
 	        max = R;
 	    if(max != i)
