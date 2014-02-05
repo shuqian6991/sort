@@ -35,9 +35,9 @@ public class MergeSort {
 	        ++_totalValCmp;
 		if (low < high) {
 			int middle = (low + high) / 2; 	// Get the index of the middle element
-			mergesort(low, middle); 		// Sort the left side of the array
+			mergesort(low, middle); 	// Sort the left side of the array
 			mergesort(middle + 1, high); 	// Sort the right side of the array
-			merge(low, middle, high); 		// Combine them both
+			merge(low, middle, high); 	// Combine them both
 		}
 		
 	}
