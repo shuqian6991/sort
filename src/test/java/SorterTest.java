@@ -10,7 +10,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class SorterTest {
 	boolean calibrated = false;
-	boolean showExamples = true;
+	boolean showExamples = false;
+	boolean showMetrics = true;
+	boolean showOverhead = false;
 	int listSize = 200;
 	Random rgen = new Random();  // seed it
 	int []array = new int[listSize];
@@ -43,9 +45,9 @@ public class SorterTest {
 		case SELECTION:	srt.selectionSort(array);	break;
 		case BUBBLE:	srt.bubbleSort(array);		break;
 		case INSERTION:	srt.insertionSort(array);	break;
-		case COMB:		srt.combSort(array);		break;
-		case SHELL:		srt.shellSort(array);		break;
-		case HEAP:		srt.heapSort(array);		break;
+		case COMB:	srt.combSort(array);		break;
+		case SHELL:	srt.shellSort(array);		break;
+		case HEAP:	srt.heapSort(array);		break;
 		default: System.out.println("Unknown sort method invocation"); break;
 		}
 	}
@@ -69,7 +71,9 @@ public class SorterTest {
 		}
 		stopTime = System.currentTimeMillis();
 		setupOverhead = stopTime-startTime;
-		System.out.printf("SetupOverhead: startTime = %d,  stopTime = %d,  elapsed = %d\n\n", startTime, stopTime, setupOverhead);
+		if (showOverhead) {
+		    System.out.printf("SetupOverhead: startTime = %d,  stopTime = %d,  elapsed = %d\n\n", startTime, stopTime, setupOverhead);
+		}
 		calibrated = true;
 	}
 	
@@ -80,21 +84,26 @@ public class SorterTest {
 	public void arrayPrint(String s, int a[]) {
 		System.out.println(s);
 		for (int i = 0; i < a.length; i++) {
-			System.out.printf("%3d ",a[i]);
-			if (i % 20 == 19) {
-				System.out.println();
-			}
-		}
-		if (srt.getSwapCount() > 0) {
-			System.out.println("\nTotal swaps: " + srt.getSwapCount());
-		}
-		if (srt.getCompareCount() > 0) {
-			System.out.println("\nTotal value compares: " + srt.getCompareCount());
+		    System.out.printf("%3d ",a[i]);
+		    if (i % 20 == 19) {
+			System.out.println();
+		    }
 		}
 	}	
+
+	public void printMetrics() {
+		if (showMetrics) {
+		    if (srt.getSwapCount() > 0) {
+			System.out.println("Avg swaps per sort: " + srt.getSwapCount()/loopCount);
+		    }
+		    if (srt.getCompareCount() > 0) {
+			System.out.println("Avg value compares per sort: " + srt.getCompareCount()/loopCount);
+		    }
+		}
+	}
 	
 	public void printElapsedTime() {
-		System.out.printf("%d iterations: %d msec\n\n", loopCount, stopTime-startTime - setupOverhead);
+		System.out.printf("%d iterations: %d msec\n", loopCount, stopTime-startTime - setupOverhead);
 	}
 	
 
@@ -103,7 +112,7 @@ public class SorterTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// rgen.setSeed( 19580427 );  // seed it for the same arrays every time
+		// rgen.setSeed( 19580427 );  // seed it for the same arrays every time (for debugging)
 	}
 	
 	/*
@@ -131,15 +140,14 @@ public class SorterTest {
 			arrayPrint("After:", array);
 			assertTrue(validateArray(array));
 		}
-		
 		startTime = System.currentTimeMillis();
-		System.out.printf("Iterating %d times...\n",loopCount);
 		for (int i=0; i<loopCount; i++) {
 			resetList();
 			invokeSortMethod(m);
 		}
 		stopTime = System.currentTimeMillis();
 		printElapsedTime();
+		printMetrics();
 	}
 
 	@Test

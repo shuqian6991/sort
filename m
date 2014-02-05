@@ -5,6 +5,8 @@
 ################################################################
 if [ ! -d "target" ]; then
     mkdir target
+    mkdir target/classes
+    mkdir 'target/test-classes'
 fi
 if [ "$JAVAEXTERN" == "" ]; then
     echo "WARNING: environment variable JAVAEXTERN is not set"
@@ -13,9 +15,10 @@ fi
 
 if [ $# -gt 0 ]; then
     case "$1" in
-	clean)	echo "cleaning..."; shift; rm target/*.class  ;;
+	clean)	echo "cleaning..."; shift; rm -rf target ;;
 	*)  echo "unknown option: $1"; shift ;;
     esac
 else
-    javac -cp "${JAVAEXTERN}/junit-4.11.jar" src/main/*.java src/test/*.java -g -d target 
+    javac -cp "${JAVAEXTERN}/junit-4.11.jar" src/main/java/*.java -g -d target/classes
+    javac -cp "${JAVAEXTERN}/junit-4.11.jar:target/classes" src/test/java/*.java -g -d 'target/test-classes'
 fi

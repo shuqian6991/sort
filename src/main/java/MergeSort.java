@@ -8,12 +8,17 @@ public class MergeSort {
 	private int number;
 
 	private int totalcopies = 0;
+	private int _totalValCmp = 0;
 	
 	public void resetStats() {
 		totalcopies = 0;
+		_totalValCmp = 0;
 	}
 	public int getSwapCount() {
 		return totalcopies;
+	}
+	public int getCompareCount() {
+		return _totalValCmp;
 	}
 	
 	public void sort(int[] values) {
@@ -27,6 +32,7 @@ public class MergeSort {
 		/*
 		 * If low is >= high the the list is fully sorted
 		 */
+	        ++_totalValCmp;
 		if (low < high) {
 			int middle = (low + high) / 2; 	// Get the index of the middle element
 			mergesort(low, middle); 		// Sort the left side of the array
@@ -54,6 +60,7 @@ public class MergeSort {
 		 * to the original array
 		 */
 		while (i <= middle && j <= high) {
+			++_totalValCmp;
 			if (helper[i] <= helper[j]) {
 				numbers[k] = helper[i];
 				i++;
