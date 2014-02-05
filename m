@@ -1,6 +1,5 @@
 #!/bin/sh
 ################################################################
-#
 # A very simple, brute-force make script for these java sources.
 # Steve Mansour
 ################################################################
