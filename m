@@ -15,7 +15,7 @@ fi
 
 if [ $# -gt 0 ]; then
     case "$1" in
-	clean)	echo "cleaning..."; shift; rm -rf target ;;
+	clean)	echo "cleaning..."; shift; rm -rf target coverage coverage.* ;;
 	*)  echo "unknown option: $1"; shift ;;
     esac
 else

@@ -1,10 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sman</groupId>
     <artifactId>sort</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+
     <name>sort</name>
     <repositories>
         <repository>
@@ -50,7 +52,7 @@
                 <version>2.7</version>
             </plugin>
 
-	    <!--
+	    <!--  FINDBUGS
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -118,24 +120,28 @@
                     </dependency>
                 </dependencies>
             </plugin>
-	    -->
+	    FINDBUGS -->
 
+		
+	    <!--  EMMA CODE COVERAGE -->
 	    <plugin>
-	    <groupId>org.codehaus.mojo</groupId>
-	    <artifactId>emma-maven-plugin</artifactId>
-	    <version>1.0-alpha-3</version>
-	    <inherited>true</inherited>
-	    <executions>
-		<execution>
-		    <id>instrument</id>
-		    <phase>process-test-classes</phase>
-		    <goals>
-			<goal>instrument</goal>
-		    </goals>
-		</execution>
-	    </executions>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>emma-maven-plugin</artifactId>
+		<version>1.0-alpha-3</version>
+		<inherited>true</inherited>
+		<executions>
+		    <execution>
+			<id>instrument</id>
+			<phase>process-test-classes</phase>
+			<goals>
+			    <goal>instrument</goal>
+			</goals>
+		    </execution>
+		</executions>
 	    </plugin> 
-            
+	    <!--  EMMA CODE COVERAGE -->
+	    
+           
         </plugins>
     </build>
     
