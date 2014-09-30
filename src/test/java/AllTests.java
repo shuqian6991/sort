@@ -4,7 +4,12 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({ MergeSortTest.class, SorterTest.class })
+@SuiteClasses({ BubbleSortTest.class, 
+				CombinationSortTest.class,
+				HeapSortTest.class,
+				MergeSortTest.class,
+				SelectionSortTest.class,
+				ShellSortTest.class })
 public class AllTests {
 
 }

@@ -1,57 +1,27 @@
 import java.util.Random;
 
 import org.junit.Before;
-import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author sman
- *
- */
-public class SorterTest {
-	boolean calibrated = false;
-	boolean showExamples = false;
-	boolean showMetrics = true;
-	boolean showOverhead = false;
-	int listSize = 200;
-	Random rgen = new Random();  // seed it
-	int []array = new int[listSize];
-	long startTime;
-	long stopTime;
-	Sorter srt = new Sorter();
-	long setupOverhead;
-	int loopCount = 2000;	// number of times we'll run each test; for a more accurate timing measurement
-	enum SortMethod {SELECTION, BUBBLE, INSERTION, COMB, SHELL, HEAP};
+public class SortTestBase {
+	protected boolean calibrated = false;
+	protected boolean showExamples = false;
+	protected boolean showMetrics = true;
+	protected boolean showOverhead = false;
+	protected int listSize = 200;
+	protected Random rgen = new Random();  // seed it
+	protected int []array = new int[listSize];
+	protected long startTime;
+	protected long stopTime;
+	protected long setupOverhead;
+	protected int loopCount = 2000;	// number of times we'll run each test; for a more accurate timing measurement
 
 	public void resetList() {
 		for (int i=0; i < array.length; i++) {
 			array[i] = rgen.nextInt(listSize);
 		}
 	}
-	
-	public String sortMethodToString( SortMethod m) {
-		switch (m) {
-		case SELECTION: return "SELECTION";
-		case BUBBLE: return "BUBBLE";
-		case INSERTION: return "INSERTION";
-		case COMB: return "COMB";
-		case SHELL: return "SHELL";
-		case HEAP: return "HEAP";
-		default: return "UNKNOWN SORT TYPE";
-		}
-	}
-	public void invokeSortMethod( SortMethod m) {
-		switch (m) {
-		case SELECTION:	srt.selectionSort(array);	break;
-		case BUBBLE:	srt.bubbleSort(array);		break;
-		case INSERTION:	srt.insertionSort(array);	break;
-		case COMB:	srt.combSort(array);		break;
-		case SHELL:	srt.shellSort(array);		break;
-		case HEAP:	srt.heapSort(array);		break;
-		default: System.out.println("Unknown sort method invocation"); break;
-		}
-	}
-	
 	/**
 	 *  My mac laptop can often sort an array of 200 or more integers in less than 
 	 *  a millisecond. So we can't get an accurate time measurement. So, we can run
@@ -91,14 +61,10 @@ public class SorterTest {
 		}
 	}	
 
-	public void printMetrics() {
+	public void printMetrics(SortExt m) {
 		if (showMetrics) {
-		    if (srt.getSwapCount() > 0) {
-			System.out.println("Avg swaps per sort: " + srt.getSwapCount()/loopCount);
-		    }
-		    if (srt.getCompareCount() > 0) {
-			System.out.println("Avg value compares per sort: " + srt.getCompareCount()/loopCount);
-		    }
+			System.out.println("Avg swaps per sort: " + m.getSwapCount()/loopCount);
+			System.out.println("Avg value compares per sort: " + m.getCompareCount()/loopCount);
 		}
 	}
 	
@@ -128,56 +94,25 @@ public class SorterTest {
 		return true;
 	}
 
-	public void runTest(SortMethod m) {
+	public void runTest(SortExt m) {
 		calibrateSetupOverhead();
-		srt.resetStats();
+		m.resetStats();
 		resetList();
-		sectionHeader( sortMethodToString(m) + " SORT");
 		
 		if (showExamples) {
 			arrayPrint("Before:", array);
-			invokeSortMethod(m);
+			m.sort(array);
 			arrayPrint("After:", array);
 			assertTrue(validateArray(array));
 		}
 		startTime = System.currentTimeMillis();
 		for (int i=0; i<loopCount; i++) {
 			resetList();
-			invokeSortMethod(m);
+			m.sort(array);
 		}
 		stopTime = System.currentTimeMillis();
 		printElapsedTime();
-		printMetrics();
-	}
-
-	@Test
-	public void testBubble() {
-		runTest(SortMethod.BUBBLE);
-	}
-
-	@Test
-	public void testComb() {
-		runTest(SortMethod.COMB);
-	}
-	
-	@Test
-	public void testSelection() {
-		runTest(SortMethod.SELECTION);
-	}
-
-	@Test
-	public void testInsertion() {
-		runTest(SortMethod.INSERTION);
-	}
-	
-	@Test
-	public void testShell() {
-		runTest(SortMethod.SHELL);
-	}
-
-	@Test
-	public void testHeap() {
-		runTest(SortMethod.HEAP);
+		printMetrics(m);
 	}
 
 }

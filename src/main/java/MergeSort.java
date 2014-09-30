@@ -1,7 +1,7 @@
 /*
  *  complexity:  worst case - n log(n)
  */
-public class MergeSort {
+public class MergeSort extends SortExt {
 	private int[] numbers;
 	private int[] helper;
 

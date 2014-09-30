@@ -1,9 +1,9 @@
 import org.junit.Test;
 
-public class MergeSortTest extends SortTestBase {
+public class HeapSortTest extends SortTestBase {
 	@Test
 	public void testSort() {
-		MergeSort m = new MergeSort();
+		HeapSort m = new HeapSort();
 		System.out.println("\nclass:" + m.getClass().getName());
 		runTest(m);
 	}

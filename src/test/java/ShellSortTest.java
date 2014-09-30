@@ -1,9 +1,9 @@
 import org.junit.Test;
 
-public class MergeSortTest extends SortTestBase {
+public class ShellSortTest extends SortTestBase {
 	@Test
 	public void testSort() {
-		MergeSort m = new MergeSort();
+		ShellSort m = new ShellSort();
 		System.out.println("\nclass:" + m.getClass().getName());
 		runTest(m);
 	}
