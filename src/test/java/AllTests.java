@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ BubbleSortTest.class, 
 				CombinationSortTest.class,
 				HeapSortTest.class,
+				InsertionSortTest.class,
 				MergeSortTest.class,
 				SelectionSortTest.class,
 				ShellSortTest.class })
