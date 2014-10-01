@@ -5,10 +5,10 @@ import org.junit.Before;
 import static org.junit.Assert.assertTrue;
 
 public class SortTestBase {
-	protected boolean calibrated = true;
-	protected boolean showExamples = true;
+	private boolean calibrated = false;
+	protected boolean showExamples = false;
 	protected boolean showMetrics = true;
-	protected boolean showOverhead = true;
+	protected boolean showOverhead = false;
 	protected int listSize = 200;
 	protected Random rgen = new Random();  // seed it
 	protected int []array = new int[listSize];
