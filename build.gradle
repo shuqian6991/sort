@@ -1,10 +1,22 @@
 apply plugin: "java"
 apply plugin: "eclipse"
 apply plugin: "jacoco"
+apply plugin: "findbugs"
 
 repositories {
     mavenCentral()
 }
+
+findbugs {
+    toolVersion = "2.0.2"
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+ }
  
 dependencies {
     testCompile 'junit:junit:[4,)'

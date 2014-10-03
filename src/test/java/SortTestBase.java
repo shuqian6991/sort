@@ -42,7 +42,7 @@ public class SortTestBase {
 		stopTime = System.currentTimeMillis();
 		setupOverhead = stopTime-startTime;
 		if (showOverhead) {
-		    System.out.printf("SetupOverhead: startTime = %d,  stopTime = %d,  elapsed = %d\n\n", startTime, stopTime, setupOverhead);
+		    System.out.printf("SetupOverhead: startTime = %d,  stopTime = %d,  elapsed = %d%n%n", startTime, stopTime, setupOverhead);
 		}
 		calibrated = true;
 	}
@@ -69,7 +69,7 @@ public class SortTestBase {
 	}
 	
 	public void printElapsedTime() {
-		System.out.printf("%d iterations: %d msec\n", loopCount, stopTime-startTime - setupOverhead);
+		System.out.printf("%d iterations: %d msec%n", loopCount, stopTime-startTime - setupOverhead);
 	}
 	
 

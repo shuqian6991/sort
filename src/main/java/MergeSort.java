@@ -21,9 +21,10 @@ public class MergeSort extends SortExt {
 		return _totalValCmp;
 	}
 	
-	public void sort(int[] values) {
-		numbers = values;
-		number = values.length;
+	public void sort(int b[]) {
+		int []a = new int[b.length];
+		numbers = a;
+		number = a.length;
 		helper = new int[number];
 		mergesort(0, number - 1);
 	}
