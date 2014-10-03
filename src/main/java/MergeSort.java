@@ -23,6 +23,9 @@ public class MergeSort extends SortExt {
 	
 	public void sort(int b[]) {
 		int []a = new int[b.length];
+		for (int i = 0; i < b.length; i++) {
+			a[i] = b[i];
+		}
 		numbers = a;
 		number = a.length;
 		helper = new int[number];
