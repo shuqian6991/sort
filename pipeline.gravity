@@ -1,0 +1,26 @@
+// PIPELINE DEFINITIONS START
+plan {
+  pipeline {
+    id = 'sort'
+    branch = 'master'
+
+    // FUNCTIONAL TEST SEGMENT START
+    segment {
+      name = 'Functional.Test'
+
+      when("build.completed").do {
+        emit action("Pipeline", [
+          action: "Terminate",
+          status: "success"
+        ])
+      }
+
+      when("build.failed").do {
+        emit action("Pipeline", [
+          action: "Terminate",
+          status: "failed"
+        ])
+      }
+    }
+  }
+}

@@ -1,12 +1,136 @@
+import groovy.json.JsonOutput
+import groovyx.net.http.HTTPBuilder
+
+import static groovyx.net.http.ContentType.JSON
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
+  }
+}
 apply plugin: "java"
 apply plugin: "eclipse"
-apply plugin: "jacoco"
-apply plugin: "findbugs"
+// apply plugin: "jacoco"
+// apply plugin: "findbugs"
 
-repositories {
-    mavenCentral()
+def runId = UUID.randomUUID()
+Boolean isFirstTask = true
+Long startTime;
+
+def emitEvent(runId, statusVal, customMap) {
+  def payloadMap = [
+      id           : UUID.randomUUID(),
+      version      : 'com/apple/gravity/api/data/v1/events',
+      correlationId: runId,
+      service      : 'build',
+      status       : statusVal,
+      userId       : 'gradlebuild',
+      timestamp    : new Date().time,
+      customMap    : customMap
+  ]
+
+  def payload = JsonOutput.toJson(payloadMap)
+  invokeGravity(payload)
 }
 
+def invokeGravity(payload) {
+  def apiServer = "http://cp1-gravity-staging4-v1-ap.gravity.elb.apple.com"
+  def response = new HTTPBuilder(apiServer)
+      .post(path: '/api/events', body: payload, requestContentType: JSON);
+}
+
+gradle.addListener(new TaskExecutionListener() {
+  void beforeExecute(Task task) {
+    if (isFirstTask) {
+      isFirstTask = false;
+      startTime = new Date().time
+      emitEvent(runId, "commit.completed", [
+          projectId      : 'arunkumarbs/sort',
+          projectBranchId: 'refs/heads/master'
+      ])
+      emitEvent(runId, "build.started", null)
+    }
+
+    def status;
+    switch (task) {
+      case JavaCompile:
+        status = "compile.started"
+        break
+      case GroovyCompile:
+        status = "compile.started"
+        break
+      case Test:
+        status = "test.started"
+        break
+    }
+
+    if (status) {
+      emitEvent(runId, status, [
+          taskName: task.name
+      ])
+    }
+  }
+
+  void afterExecute(Task task, TaskState state) {
+    def status;
+    if (state.failure) {
+      switch (task) {
+        case JavaCompile:
+          status = "compile.failed"
+          break
+        case GroovyCompile:
+          status = "compile.failed"
+          break
+        case Test:
+          status = "test.failed"
+          break
+      }
+    } else {
+      switch (task) {
+        case JavaCompile:
+          status = "compile.completed"
+          break
+        case GroovyCompile:
+          status = "compile.completed"
+          break
+        case Test:
+          status = "test.completed"
+          break
+      }
+    }
+
+    if (status) {
+      emitEvent(runId, status, [
+          taskName: task.name
+      ])
+    }
+  }
+})
+
+gradle.buildFinished { buildResult ->
+  Long endTime = new Date().time
+  if (buildResult.failure) {
+    emitEvent(runId, "build.failed", [
+        buildResult       : 'failed',
+        totalTimeInMillis : endTime - startTime
+    ])
+  } else {
+    emitEvent(runId, "build.completed", [
+        buildResult       : 'success',
+        totalTimeInMillis : endTime - startTime
+    ])
+  }
+}
+
+
+repositories {
+  mavenCentral()
+}
+
+/*
 findbugs {
     toolVersion = "2.0.2"
 }
@@ -17,14 +141,15 @@ tasks.withType(FindBugs) {
         html.enabled = true
     }
  }
- 
+*/
+
 dependencies {
-    testCompile 'junit:junit:[4,)'
+  testCompile 'junit:junit:[4,)'
 }
 
 test {
-    testLogging {
-	// Show that tests are run in the command-line output
-	events 'started', 'passed'
-    }
+  testLogging {
+    // Show that tests are run in the command-line output
+    events 'started', 'passed'
+  }
 }
