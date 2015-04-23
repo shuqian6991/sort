@@ -1,6 +1,3 @@
-/*
- *  complexity:  worst case - n log(n)
- */
 public class MergeSort extends SortExt {
 	private int[] numbers;
 	private int[] helper;
@@ -8,20 +5,26 @@ public class MergeSort extends SortExt {
 	private int number;
 
 	private int totalcopies = 0;
-	private int _totalValCmp = 0;
+	private int totalValCmp = 0;
 	
 	public void resetStats() {
 		totalcopies = 0;
-		_totalValCmp = 0;
+		totalValCmp = 0;
 	}
+	
 	public int getSwapCount() {
 		return totalcopies;
 	}
+	
 	public int getCompareCount() {
-		return _totalValCmp;
+		return totalValCmp;
 	}
 	
-	public void sort(int b[]) {
+	/**
+	 *  An implementation of Merge Sort.
+	 *  complexity:  worst case - n log(n)
+	 */
+	public void sort(int[] b) {
 		int []a = new int[b.length];
 		for (int i = 0; i < b.length; i++) {
 			a[i] = b[i];
@@ -36,7 +39,7 @@ public class MergeSort extends SortExt {
 		/*
 		 * If low is >= high the the list is fully sorted
 		 */
-	        ++_totalValCmp;
+	        ++totalValCmp;
 		if (low < high) {
 			int middle = (low + high) / 2; 	// Get the index of the middle element
 			mergesort(low, middle); 	// Sort the left side of the array
@@ -64,7 +67,7 @@ public class MergeSort extends SortExt {
 		 * to the original array
 		 */
 		while (i <= middle && j <= high) {
-			++_totalValCmp;
+			++totalValCmp;
 			if (helper[i] <= helper[j]) {
 				numbers[k] = helper[i];
 				i++;
@@ -78,7 +81,7 @@ public class MergeSort extends SortExt {
 		/*
 		 * Copy the rest of the left side of the array into the target array
 		 */
-		for (; i<= middle; k++, i++) {
+		for (; i <= middle; k++, i++) {
 			numbers[k] = helper[i];
 			++totalcopies;
 		}

@@ -1,8 +1,8 @@
-import java.util.Random;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 
-import static org.junit.Assert.assertTrue;
+import java.util.Random;
 
 public class SortTestBase {
 	private boolean calibrated = false;
@@ -17,8 +17,11 @@ public class SortTestBase {
 	protected long setupOverhead;
 	protected int loopCount = 2000;	// number of times we'll run each test; for a more accurate timing measurement
 
+	/**
+	 * Regenerate a new random list of ints.
+	 */
 	public void resetList() {
-		for (int i=0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) {
 			array[i] = rgen.nextInt(listSize);
 		}
 	}
@@ -33,25 +36,36 @@ public class SortTestBase {
 	 *  later by removing it from the amount of time the sort loop takes.
 	 */
 	public void calibrateSetupOverhead() {
-		if (calibrated) return;
+		if (calibrated) {
+			return;
+		}
 	
 		startTime = System.currentTimeMillis();
 		for (int i = 0; i < loopCount; i++) {
 			resetList();
 		}
 		stopTime = System.currentTimeMillis();
-		setupOverhead = stopTime-startTime;
+		setupOverhead = stopTime - startTime;
 		if (showOverhead) {
 		    System.out.printf("SetupOverhead: startTime = %d,  stopTime = %d,  elapsed = %d%n%n", startTime, stopTime, setupOverhead);
 		}
 		calibrated = true;
 	}
 	
+	/**
+	 * Print out a divider between the different sort lists.
+	 * @param s a string to emit after the divider
+	 */
 	public void sectionHeader(String s) {
 		System.out.println("-------------------------------------------------------------------------------\n" + s);
 	}
 	
-	public void arrayPrint(String s, int a[]) {
+	/**
+	 * Print out an array of ints in a formated way.
+	 * @param s  a label to include in the printout
+	 * @param a  the array of ints to sort
+	 */
+	public void arrayPrint(String s, int[] a) {
 		System.out.println(s);
 		for (int i = 0; i < a.length; i++) {
 		    System.out.printf("%3d ",a[i]);
@@ -61,39 +75,49 @@ public class SortTestBase {
 		}
 	}	
 
+	/**
+	 * Print number of swaps and compares.
+	 * @param m the sort object
+	 */
 	public void printMetrics(SortExt m) {
 		if (showMetrics) {
-			System.out.println("Avg swaps per sort: " + m.getSwapCount()/loopCount);
-			System.out.println("Avg value compares per sort: " + m.getCompareCount()/loopCount);
+			System.out.println("Avg swaps per sort: " + m.getSwapCount() / loopCount);
+			System.out.println("Avg value compares per sort: " + m.getCompareCount() / loopCount);
 		}
 	}
 	
 	public void printElapsedTime() {
-		System.out.printf("%d iterations: %d msec%n", loopCount, stopTime-startTime - setupOverhead);
+		System.out.printf("%d iterations: %d msec%n", loopCount, stopTime - startTime - setupOverhead);
 	}
 	
 
 	/**
-	 * @throws java.lang.Exception
+	 * One time setup before we start testing.
+	 * @throws java.lang.Exception  from setSeed.
 	 */
 	@Before
 	public void setUp() throws Exception {
 		// rgen.setSeed( 19580427 );  // seed it for the same arrays every time (for debugging)
 	}
 	
-	/*
+	/**
+	 * Validate that the array is correctly sorted.
 	 * returns true if the array is correctly sorted
 	 * otherwise it returns false.
 	 */
-	public boolean validateArray(int a[]) {
-		for (int i = 0; i+1 < a.length; i++) {
-			if (a[i] > a[i+1]) {
+	public boolean validateArray(int[] a) {
+		for (int i = 0; i + 1 < a.length; i++) {
+			if (a[i] > a[i + 1]) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+	/**
+	 * Run a test with the supplied object.
+	 * @param m  the  object to test
+	 */
 	public void runTest(SortExt m) {
 		calibrateSetupOverhead();
 		m.resetStats();
@@ -106,7 +130,7 @@ public class SortTestBase {
 			assertTrue(validateArray(array));
 		}
 		startTime = System.currentTimeMillis();
-		for (int i=0; i<loopCount; i++) {
+		for (int i = 0; i < loopCount; i++) {
 			resetList();
 			m.sort(array);
 		}
