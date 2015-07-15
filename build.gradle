@@ -1,7 +1,7 @@
 apply plugin: "java"
 apply plugin: "eclipse"
-apply plugin: "jacoco"
-apply plugin: "findbugs"
+//apply plugin: "jacoco"
+//apply plugin: "findbugs"
 apply plugin: "checkstyle"
 apply plugin: "pmd"
 
@@ -9,6 +9,7 @@ repositories {
     mavenCentral()
 }
 
+/*
 findbugs {
     toolVersion = "2.0.2"
 }
@@ -25,6 +26,7 @@ jacocoTestReport {
     description = "Generate Jacoco coverage reports after running tests."
     additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
+*/
 
 checkstyleMain << {
     ant.xslt(in: reports.xml.destination,
