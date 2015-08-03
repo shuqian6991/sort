@@ -10,7 +10,7 @@ repositories {
 }
 
 findbugs {
-    toolVersion = "2.0.2"
+    toolVersion = "3.0.1"
 }
 
 tasks.withType(FindBugs) {
