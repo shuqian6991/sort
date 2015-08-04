@@ -1,9 +1,23 @@
-apply plugin: "java"
+buildscript {
+    repositories {
+        jcenter()
+    }   
+    dependencies {
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '3.1.1')
+    }   
+}
+
+version = currentVersion
+
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'java'
+
 apply plugin: "eclipse"
 apply plugin: "jacoco"
 apply plugin: "findbugs"
 apply plugin: "checkstyle"
 apply plugin: "pmd"
+apply plugin: 'maven-publish'
 
 repositories {
     mavenCentral()
@@ -53,3 +67,37 @@ test {
 	events 'started', 'passed'
     }
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }   
+    }   
+}
+
+artifactory {
+    contextUrl = 'http://ec2-52-6-164-191.compute-1.amazonaws.com/artifactory'
+    publish {
+        repository {
+            repoKey = 'jenkins-snapshot' // The Artifactory repository key to publish to
+            username = "${artifactory_user}" // The publisher user name
+            password = "${artifactory_password}" // The publisher password
+        }
+        defaults {
+            // Reference to Gradle publications defined in the build script.
+            // This is how we tell the Artifactory Plugin which artifacts should be
+            // published to Artifactory.
+            publications('mavenJava')
+            publishArtifacts = true
+            // Properties to be attached to the published artifacts.
+            properties = ['qa.level': 'basic', 'dev.team' : 'core']
+            // Publish generated POM files to Artifactory (true by default)
+            publishPom = true
+        }
+    }
+    resolve {
+        repoKey = 'repo'
+    }
+}
+
