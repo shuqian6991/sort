@@ -33,6 +33,10 @@ if [  -z "${BUILD_NUMBER}" ]; then
 fi
 
 buildno=$((BUILD_NUMBER))
+
+echo "Updating build number information for this build:"
+printf "Major: = %d\nMinor: = %d\nBuild No: %06d\nType: $type\n" $major $minor $buildno
+
 printf "currentVersion=%d.%d.%06d-$type\n" $major $minor $buildno > tmpfile
 sed '/currentVersion/d' gradle.properties >> tmpfile
 mv gradle.properties gradle.properties.bak
