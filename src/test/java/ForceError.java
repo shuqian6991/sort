@@ -9,7 +9,7 @@ public class ForceError extends SortTestBase {
 		 * set me to false if you want to fail a test
 		 * and set me to true if you want it to pass
 		 */
-		assertTrue(false);
+		assertTrue(true);
 	}
 
 }
