@@ -11,7 +11,6 @@ version = currentVersion
 
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'java'
-
 apply plugin: "eclipse"
 apply plugin: "jacoco"
 apply plugin: "findbugs"
