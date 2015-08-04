@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 				InsertionSortTest.class,
 				MergeSortTest.class,
 				SelectionSortTest.class,
-				ShellSortTest.class })
+				ShellSortTest.class,
+				ForceError.class})
 public class AllTests {
 
 }
