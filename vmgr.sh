@@ -16,6 +16,17 @@
 # Build Number  - 6 digit, zero-filled integer, 000001, 000002, ...
 #--------------------------------------------------------------------------
 
+if [ ! -f gradle.properties ]; then
+    echo "File does not exist: gradle.properties"
+    exit 1
+fi
+ver=$( grep currentVersion gradle.properties )
+if [ -z "$ver" ]; then
+    echo "File gradle.properties does not have an entry for currentVersion."
+    echo "Have you pulled in the gradle artifactory plugin and set it up?"
+    exit 1
+fi
+
 #
 # $ver will look like this:
 #	currentVersion=1.0.000000-SNAPSHOT
@@ -23,7 +34,6 @@
 #                      | |    +---------- build number space
 #                      | +--------------- Minor version number
 #                      +----------------- Major version number
-ver=$( grep currentVersion gradle.properties )
 ver=${ver/currentVersion=/}
 verlen=${#ver}
 
