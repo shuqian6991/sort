@@ -1,10 +1,22 @@
 #!/bin/bash
+#--------------------------------------------------------------------------
 # Manage the version number for releases that will be archived to artifactory.
-# It assumes that the BUILD_NUMBER environment variable contains the build
-# number.  This environment variable is managed by Jenkins.  It also assumes
-# that we're working with gradle and its artifactory plugin.  The line that
-# controls the numbering begins with "currentVersion"
+# This script is meant to be run only in the Jenkins environment. It appends the
+# to the major and minor version numbers it finds in the gradle.properties
+# file (see currentVersion).
+#
+# It is assumed that we're working with gradle and its artifactory plugin.
+# The line that controls the numbering begins with "currentVersion"
+# The build identifier we use will be in this format:
+#
+#     <Major version>.<Minor version>.<Build Number>-<Type>
+#
+# Major version - an integer, 1, 2, 3, ...
+# Minor version - an integer, 1, 2, 3, ...
+# Build Number  - 6 digit, zero-filled integer, 000001, 000002, ...
+#--------------------------------------------------------------------------
 
+#
 # $ver will look like this:
 #	currentVersion=1.0.000000-SNAPSHOT
 #                      | |    |      ^--- can be either SNAPSHOT or RELEASE
@@ -14,7 +26,6 @@
 ver=$( grep currentVersion gradle.properties )
 ver=${ver/currentVersion=/}
 verlen=${#ver}
-
 
 major=${ver/%.*/}
 majorlen=${#major}
